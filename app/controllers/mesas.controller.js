@@ -1,22 +1,21 @@
 const db = require("../models");
-const Rol = db.rol;
+const Mesa = db.mesa;
 const Op = db.Sequelize.Op;
 
-// Validar data null
 exports.create = (req, res) => {
-  // Validate request
-  if (!req.body.descripcion) {
+  if (!req.body.estado) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
     return;
   }
 
-  const rol = {
-    descripcion: req.body.descripcion
+  const mesa = {
+    estado: req.body.estado,
+    capacidad: req.body.capacidad
   };
 
-  Rol.create(rol)
+  Mesa.create(mesa)
     .then(data => {
       res.send(data);
     })
@@ -28,19 +27,18 @@ exports.create = (req, res) => {
     });
 };
 
-
 exports.findAll = (req, res) => {
-  const descripcion = req.query.descripcion;
-  var condition = descripcion ? { descripcion: { [Op.iLike]: `%${descripcion}%` } } : null;
+  const estado = req.query.estado;
+  var condition = estado ? { estado: { [Op.iLike]: `%${estado}%` } } : null;
 
-  Rol.findAll({ where: condition })
+  Mesa.findAll({ where: condition })
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving rol."
+          err.message || "Some error occurred while retrieving."
       });
     });
 };
@@ -48,13 +46,13 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Rol.findByPk(id)
+  Mesa.findByPk(id)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error retrieving rol with id=" + id
+        message: "Error retrieving id=" + id
       });
     });
 };
@@ -63,79 +61,76 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Rol.update(req.body, {
+  Mesa.update(req.body, {
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "rol was updated successfully."
+          message: "was updated successfully."
         });
       } else {
         res.send({
-          message: `Cannot update Tutorial with id=${id}. Maybe rol was not found or req.body is empty!`
+          message: `Cannot update with id=${id}. Maybe was not found or req.body is empty!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating rol with id=" + id
+        message: "Error updating with id=" + id
       });
     });
 };
-
 
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Rol.destroy({
+  Mesa.destroy({
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "rol was deleted successfully!"
+          message: "was deleted successfully!"
         });
       } else {
         res.send({
-          message: `Cannot delete rol with id=${id}. Maybe Tutorial was not found!`
+          message: `Cannot delete with id=${id}. Maybe was not found!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete rol with id=" + id
+        message: "Could not delete with id=" + id
       });
     });
 };
 
-
 exports.deleteAll = (req, res) => {
-  Rol.destroy({
+  Mesa.destroy({
     where: {},
     truncate: false
   })
     .then(nums => {
-      res.send({ message: `${nums} rol were deleted successfully!` });
+      res.send({ message: `${nums} were deleted successfully!` });
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all rol."
+          err.message || "Some error occurred while removing all."
       });
     });
 };
 
-
 exports.findAllPublished = (req, res) => {
-  Rol.findAll({ where: { published: true } })
+  Mesa.findAll({ where: { published: true } })
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving rol."
+          err.message || "Some error occurred while retrieving."
       });
     });
 };

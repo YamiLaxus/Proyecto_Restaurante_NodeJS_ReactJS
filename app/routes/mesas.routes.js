@@ -1,5 +1,5 @@
 module.exports = app => {
-  const roles = require("../controllers/roles.controller.js");
+  const roles = require("../controllers/mesas.controller.js");
 
   var router = require("express").Router();
 
@@ -17,5 +17,5 @@ module.exports = app => {
 
   router.delete("/", roles.deleteAll);
 
-  app.use("/api/rol", router);
+  app.use("/api/mesa", router);
 };

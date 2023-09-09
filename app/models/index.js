@@ -17,4 +17,5 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.rol = require("./roles.model.js")(sequelize, Sequelize);
+db.mesa = require("./mesas.model.js")(sequelize, Sequelize);
 module.exports = db;

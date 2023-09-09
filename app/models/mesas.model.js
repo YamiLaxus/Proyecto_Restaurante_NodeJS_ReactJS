@@ -1,10 +1,10 @@
-export default (sequelize, Sequelize) => {
+module.exports = (sequelize, Sequelize) => {
     const Mesa = sequelize.define("mesas", {
         estado: {
-            type: Sequelize.BOOLEAN
+            type: Sequelize.STRING
         },
         capacidad: {
-            type: Sequelize.INT
+            type: Sequelize.INTEGER
         }
     });
 

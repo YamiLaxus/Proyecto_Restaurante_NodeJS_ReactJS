@@ -1,4 +1,4 @@
-export default (sequelize, Sequelize) => {
+module.exports = (sequelize, Sequelize) => {
 
     const Cliente = sequelize.define("clientes", {
         nombre: {

@@ -1,4 +1,4 @@
-export default (sequelize, Sequelize) => {
+module.exports = (sequelize, Sequelize) => {
     const Proveedor = sequelize.define("proveedores", {
         nombre: {
             type: Sequelize.STRING
