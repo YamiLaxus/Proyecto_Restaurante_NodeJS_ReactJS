@@ -32,8 +32,11 @@ app.get("/", (req, res) => {
   res.json({ message: "Bienvenido a Le Bernandin." });
 });
 
-// require("./app/routes/roles.routes")(app);
+require("./app/routes/roles.routes")(app);
 require("./app/routes/mesas.routes")(app);
+require("./app/routes/categorias.routes")(app);
+require("./app/routes/proveedores.routes")(app);
+require("./app/routes/menus.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

@@ -18,4 +18,7 @@ db.sequelize = sequelize;
 
 db.rol = require("./roles.model.js")(sequelize, Sequelize);
 db.mesa = require("./mesas.model.js")(sequelize, Sequelize);
+db.categoria = require("./categorias.model.js")(sequelize, Sequelize);
+db.proveedor = require("./proveedores.model.js")(sequelize, Sequelize);
+db.menu = require("./menus.model.js")(sequelize, Sequelize);
 module.exports = db;

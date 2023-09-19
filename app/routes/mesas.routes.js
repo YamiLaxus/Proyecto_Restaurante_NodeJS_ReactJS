@@ -1,21 +1,21 @@
 module.exports = app => {
-  const roles = require("../controllers/mesas.controller.js");
+  const mesas = require("../controllers/mesas.controller.js");
 
   var router = require("express").Router();
 
-  router.post("/", roles.create);
+  router.post("/", mesas.create);
 
-  router.get("/", roles.findAll);
+  router.get("/", mesas.findAll);
 
-  router.get("/published", roles.findAllPublished);
+  router.get("/published", mesas.findAllPublished);
 
-  router.get("/:id", roles.findOne);
+  router.get("/:id", mesas.findOne);
 
-  router.put("/:id", roles.update);
+  router.put("/:id", mesas.update);
 
-  router.delete("/:id", roles.delete);
+  router.delete("/:id", mesas.delete);
 
-  router.delete("/", roles.deleteAll);
+  router.delete("/", mesas.deleteAll);
 
   app.use("/api/mesa", router);
 };
