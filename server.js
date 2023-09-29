@@ -7,6 +7,13 @@ var corsOptions = {
   origin: "http://localhost:8081"
 };
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["POST", "GET", "DELETE", "PUT"],
+  })
+);
+
 app.use(cors(corsOptions));
 
 app.use(express.json());
@@ -22,20 +29,19 @@ db.sequelize.sync()
     console.log("Failed to sync db: " + err.message);
   });
 
-// drop the table if it already exists
-// db.sequelize.sync({ force: true }).then(() => {
-//   console.log("Drop and re-sync db.");
-// });
-
-// simple route
 app.get("/", (req, res) => {
   res.json({ message: "Bienvenido a Le Bernandin." });
 });
 
+app.use(cors());
 require("./app/routes/roles.routes")(app);
+app.use(cors());
 require("./app/routes/mesas.routes")(app);
+app.use(cors());
 require("./app/routes/categorias.routes")(app);
+app.use(cors());
 require("./app/routes/proveedores.routes")(app);
+app.use(cors());
 require("./app/routes/menus.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

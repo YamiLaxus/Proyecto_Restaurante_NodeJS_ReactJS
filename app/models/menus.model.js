@@ -16,8 +16,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         categoriaId: {
-            type: Sequelize.INTEGER,
-            after: "id",
+            type: Sequelize.STRING
         }
     });
 

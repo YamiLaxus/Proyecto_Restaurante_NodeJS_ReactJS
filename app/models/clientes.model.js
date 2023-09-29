@@ -1,5 +1,4 @@
 module.exports = (sequelize, Sequelize) => {
-
     const Cliente = sequelize.define("clientes", {
         nombre: {
             type: Sequelize.STRING,
