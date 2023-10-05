@@ -19,6 +19,9 @@ export default function NavBar() {
                         <Button variant='contained' color='primary' onClick={() => navigate("/insert_menu")}>
                             Agregar Menu
                         </Button>
+                        <Button variant='contained' color='primary' onClick={() => navigate("/login")}>
+                            Login
+                        </Button>
                     </Toolbar>
                 </Container>
             </AppBar>

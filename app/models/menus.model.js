@@ -1,4 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
+    const Categoria = './models/categorias.model.js';
     const Menu = sequelize.define("menus", {
         nombre: {
             type: Sequelize.STRING
@@ -18,7 +19,15 @@ module.exports = (sequelize, Sequelize) => {
         categoriaId: {
             type: Sequelize.STRING
         }
+
     });
+
+    Menu.associate = (models) => {
+        Menu.belong(Categoria, {
+            foreignKey: 'categoriaId',
+            onDelete: 'CASCADE',
+        });
+    };
 
     return Menu;
 };
