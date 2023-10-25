@@ -4,6 +4,7 @@ import MenuBar from './components/NavBar'
 import { Container } from '@mui/material'
 import Home from './components/Home'
 import Login from './components/LoginPage'
+import RegisterPage from './components/RegisterPage'
 
 function App() {
   return (
@@ -16,6 +17,9 @@ function App() {
       </Routes>
       <Routes>
         <Route path='/login' element={<Login />}/>
+      </Routes>
+      <Routes>
+        <Route path='/siginup' element={<RegisterPage />}/>
       </Routes>
       <Routes>
         <Route path='/' element={<Home />}/>

@@ -1,140 +1,92 @@
-const db = require("../models");
-const Menu = db.menu;
-const Op = db.Sequelize.Op;
+const { text } = require('express');
+const pool = require('../config/db');
 
-exports.create = (req, res) => {
-    if (!req.body.nombre) {
-        res.status(400).send({
-            message: "Content can not be empty!"
-        });
-        return;
+const getAllMenus = async (req, res, next) => {
+    try {
+        const allMenus = await pool.query('SELECT m.menu_id, m.nombre, m.descripcion, m.precio, m.imagen, e.titulo as estado, c.titulo as categoria FROM menus m INNER JOIN estados e ON e.estado_id = m.estado_id INNER JOIN prod_categorias c ON c.categoria_id = m.categoria_id');
+        res.json(allMenus.rows);
+    } catch (error) {
+        next(error);
     }
+}
 
-    const menu = {
-        nombre: req.body.nombre,
-        descripcion: req.body.descripcion,
-        precio: req.body.precio,
-        estado: req.body.estado,
-        imagen: req.body.imagen,
-        categoriaId: req.body.categoriaId
-    };
+const getAMenu = async (req, res, next) => {
+    const { id } = req.params;
 
-    Menu.create(menu)
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while creating."
+    try {
+        const result = await pool.query("SELECT m.menu_id, m.nombre, m.descripcion, m.precio, m.imagen, e.titulo as estado, c.titulo as categoria FROM menus m INNER JOIN estados e ON e.estado_id = m.estado_id INNER JOIN prod_categorias c ON c.categoria_id = m.categoria_id WHERE menu_id = $1", [id]);
+
+        if (result === 0) {
+            res.status(404).json({
+                message: "No encontrado",
             });
-        });
+        }
+
+        return res.json(result.rows[0]);
+    } catch (error) {
+        next(error);
+    }
+}
+
+const createMenu = async (req, res, next) => {
+    const { nombre, descripcion, imagen, precio, estado_id, categoria_id } = req.body;
+
+    try {
+        const result = await pool.query("INSERT INTO menus(nombre, descripcion, precio, imagen, estado_id, categoria_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING *", [
+            nombre,
+            descripcion,
+            precio,
+            imagen,
+            estado_id,
+            categoria_id
+        ]);
+        res.json(result.rows[0]);
+    } catch (error) {
+        next(error);
+    }
+}
+
+const deleteMenu = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        const result = await pool.query("DELETE * FROM menus WHERE menu_id = $1", [id]);
+
+        if (result === 0) {
+            return res.status(404).json({
+                message: "Menu no encontrado",
+            });
+        }
+
+        return res.sendStatus(202);
+    } catch (error) {
+        next(error);
+    }
+}
+
+const updateMenu = async (req, res, next) => {
+    const { id } = req.params;
+    const { nombre, descripcion, imagen, precio, estado_id, categoria_id } = req.body;
+    try {
+        const result = await pool.query("UPDATE menus SET nombre = $1, descripcion = $2, imagen = $3, precio = $4, estado_id = $5, categoria_id = $6 WHERE menu_id = $6",
+            [nombre, descripcion, imagen, precio, estado_id, categoria_id]);
+
+        if (result === 0) {
+            return res.status(404).json({
+                message: "Error no se pudo actualizar",
+            });
+        }
+
+        return res.status(202);
+    } catch (error) {
+        next(error);
+    }
 };
 
-exports.findAll = (req, res) => {
-    const nombre = req.query.nombre;
-    var condition = nombre ? { nombre: { [Op.iLike]: `%${nombre}%` } } : null;
-
-    Menu.findAll({ where: condition })
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving."
-            });
-        });
-};
-
-exports.findOne = (req, res) => {
-    const id = req.params.id;
-
-    Menu.findByPk(id)
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Error retrieving id=" + id
-            });
-        });
-};
-
-
-exports.update = (req, res) => {
-    const id = req.params.id;
-
-    Menu.update(req.body, {
-        where: { id: id }
-    })
-        .then(num => {
-            if (num == 1) {
-                res.send({
-                    message: "was updated successfully."
-                });
-            } else {
-                res.send({
-                    message: `Cannot update with id=${id}. Maybe was not found or req.body is empty!`
-                });
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Error updating with id=" + id
-            });
-        });
-};
-
-exports.delete = (req, res) => {
-    const id = req.params.id;
-
-    Menu.destroy({
-        where: { id: id }
-    })
-        .then(num => {
-            if (num == 1) {
-                res.send({
-                    message: "was deleted successfully!"
-                });
-            } else {
-                res.send({
-                    message: `Cannot delete with id=${id}. Maybe was not found!`
-                });
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Could not delete with id=" + id
-            });
-        });
-};
-
-exports.deleteAll = (req, res) => {
-    Menu.destroy({
-        where: {},
-        truncate: false
-    })
-        .then(nums => {
-            res.send({ message: `${nums} were deleted successfully!` });
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while removing all."
-            });
-        });
-};
-
-exports.findAllPublished = (req, res) => {
-    Menu.findAll({ where: { published: true } })
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving."
-            });
-        });
-};
+module.exports = {
+    getAllMenus,
+    createMenu,
+    deleteMenu,
+    updateMenu,
+    getAMenu
+}

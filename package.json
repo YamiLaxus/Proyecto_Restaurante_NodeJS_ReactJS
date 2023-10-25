@@ -8,5 +8,14 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
-  }
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "proyecto_restaurante",
+  "description": "-CRUD * {\r \tUsuarios\r \tClientes\r \tProveedores\r \tMunus\r \tCategorias",
+  "version": "1.0.0",
+  "main": "server.js",
+  "author": "",
+  "license": "ISC"
 }

@@ -1,21 +1,16 @@
-module.exports = app => {
-    const menus = require("../controllers/menus.controller.js");
-  
-    var router = require("express").Router();
-  
-    router.post("/", menus.create);
-  
-    router.get("/", menus.findAll);
-  
-    router.get("/published", menus.findAllPublished);
-  
-    router.get("/:id", menus.findOne);
-  
-    router.put("/:id", menus.update);
-  
-    router.delete("/:id", menus.delete);
-  
-    router.delete("/", menus.deleteAll);
-  
-    app.use("/api/menu", router);
-  };
+const { Router } = require('express');
+const { getAllMenus, createMenu, deleteMenu, getAMenu, updateMenu } = require('../controllers/menus.controller');
+
+const router = Router();
+
+router.post('/menus', createMenu)
+
+router.get('/menus', getAllMenus)
+
+router.get('/menus/:id', getAMenu)
+
+router.delete('/menus/:id', deleteMenu)
+
+router.put('/menus/:id', updateMenu)
+
+module.exports = router;

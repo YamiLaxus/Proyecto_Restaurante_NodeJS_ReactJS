@@ -1,5 +1,9 @@
 const express = require("express");
 const cors = require("cors");
+const morgan = require('morgan');
+
+const usuariosRoutes = require('./app/routes/usuarios.routes');
+const menusRoutes = require('./app/routes/menus.routes');
 
 const app = express();
 
@@ -17,32 +21,36 @@ app.use(
 app.use(cors(corsOptions));
 
 app.use(express.json());
-
+app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 
-const db = require("./app/models");
-db.sequelize.sync()
-  .then(() => {
-    console.log("Synced db.");
-  })
-  .catch((err) => {
-    console.log("Failed to sync db: " + err.message);
-  });
+// const db = require("./app/models");
+// db.sequelize.sync()
+//   .then(() => {
+//     console.log("Synced db.");
+//   })
+//   .catch((err) => {
+//     console.log("Failed to sync db: " + err.message);
+//   });
 
 app.get("/", (req, res) => {
   res.json({ message: "Bienvenido a Le Bernandin." });
 });
 
+// app.use(cors());
+// require("./app/routes/roles.routes")(app);
+// app.use(cors());
+// require("./app/routes/mesas.routes")(app);
+// app.use(cors());
+// require("./app/routes/categorias.routes")(app);
+// app.use(cors());
+// require("./app/routes/proveedores.routes")(app);
+// app.use(cors());
+// require("./app/routes/menus.routes")(app);
 app.use(cors());
-require("./app/routes/roles.routes")(app);
+app.use(usuariosRoutes);
 app.use(cors());
-require("./app/routes/mesas.routes")(app);
-app.use(cors());
-require("./app/routes/categorias.routes")(app);
-app.use(cors());
-require("./app/routes/proveedores.routes")(app);
-app.use(cors());
-require("./app/routes/menus.routes")(app);
+app.use(menusRoutes);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
