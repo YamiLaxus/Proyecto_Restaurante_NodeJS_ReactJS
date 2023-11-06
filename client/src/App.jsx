@@ -16,13 +16,13 @@ function App() {
         <Route path='/insert_menu' element={<InsertMenu />}/>
       </Routes>
       <Routes>
-        <Route path='/login' element={<Login />}/>
+        <Route path='/' element={<Login />}/>
       </Routes>
       <Routes>
         <Route path='/siginup' element={<RegisterPage />}/>
       </Routes>
       <Routes>
-        <Route path='/' element={<Home />}/>
+        <Route path='/home' element={<Home />}/>
       </Routes>
       </Container>    
     </BrowserRouter>

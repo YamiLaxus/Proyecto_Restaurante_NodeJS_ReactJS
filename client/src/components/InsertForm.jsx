@@ -49,7 +49,7 @@ export default function InsertMenu() {
     const data = await res.json();
 
     setLoading(false);
-    navigate("/");
+    navigate("/home");
   };
 
   const handleChange = (e) => {

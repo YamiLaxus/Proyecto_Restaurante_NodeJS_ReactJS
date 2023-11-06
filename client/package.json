@@ -15,11 +15,13 @@
     "@mui/icons-material": "^5.14.9",
     "@mui/material": "^5.14.11",
     "@mui/x-data-grid": "^6.16.0",
+    "axios": "^1.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
     "react-router-dom": "^6.16.0",
-    "router-dom": "^2.2.11"
+    "router-dom": "^2.2.11",
+    "universal-cookie": "^6.1.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

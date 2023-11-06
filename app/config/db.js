@@ -6,7 +6,7 @@ const pool = new Pool ({
     host: 'dpg-ckmbq48710pc739j8g30-a.oregon-postgres.render.com',
     port: '5432',
     database: 'le_bernardin',
-    languae: 'postgres',
+    dialect: 'postgres',
     ssl: true
 });
 

@@ -1,13 +1,12 @@
 -- Crear tablas
-
 CREATE TABLE roles(
-	rol_id serial primary key, 
+	rol_id serial primary key,
 	titulo varchar,
 	descripcion varchar
 )
 
 CREATE TABLE usuarios (
-	usuario_id serial,
+	usuario_id serial primary key,
 	nombre varchar(150) not null,
 	apellido varchar(150) not null,
 	nit varchar (25) unique,
@@ -17,7 +16,7 @@ CREATE TABLE usuarios (
 	img_profile varchar(300),
 	rol_id int not null, 
 	constraint fk_rol foreign key (rol_id)
-	references roles(id)
+	references roles(rol_id)
 )
 
 CREATE TABLE prod_categorias(
@@ -53,6 +52,23 @@ CREATE TABLE mesas(
 )
 
 
+CREATE TABLE ordenes(
+	orden_id SERIAL PRIMARY KEY,
+	usuario_id INT,
+	menu_id INT,
+	mesa_id INT DEFAULT 0,
+	cantidad INT,
+	total FLOAT,
+	--fecha DATE DEFAULT CURRENT_DATE,
+	nota VARCHAR(50),
+	CONSTRAINT FK_USUARIO_2 FOREIGN KEY(usuario_id)
+	REFERENCES usuarios(usuario_id),
+	CONSTRAINT FK_MESA FOREIGN KEY(mesa_id)
+	REFERENCES mesas(mesa_id),
+	CONSTRAINT FK_MENU FOREIGN KEY(menu_id)
+	REFERENCES menus(menu_id)
+);
+
 INSERT INTO roles(titulo, descripcion) VALUES('ADMIN', 'TOTAL ACCESS');
 INSERT INTO roles(titulo, descripcion) VALUES('EMPLEADO', 'SALES ACCESS');
 INSERT INTO roles(titulo, descripcion) VALUES('CLIENTE', 'CLIENT ACCESS');
@@ -67,3 +83,8 @@ select * from usuarios
 select * from roles
 
 SELECT u.usuario_id, u.nombre, u.apellido, u.nit, u.usuario, u.email, u.img_profile, r.rol_id as rol_id, r.titulo as rol FROM usuarios u INNER JOIN roles r ON r.rol_id = u.rol_id
+
+
+
+--Query ordenes
+SELECT o.fecha, o.orden_id as serial, o.cantidad, o.total, o.nota, u.usuario_id, u.nombre, m.menu_id, m.nombre, ms.mesa_id from ordenes o INNER JOIN usuarios u ON u.usuario_id = o.usuario_id INNER JOIN menus m ON m.menu_id = o.menu_id INNER JOIN mesas ms ON ms.mesa_id = o.mesa_id

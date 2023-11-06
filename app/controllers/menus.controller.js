@@ -62,7 +62,7 @@ const deleteMenu = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 const updateMenu = async (req, res, next) => {
     const { id } = req.params;
